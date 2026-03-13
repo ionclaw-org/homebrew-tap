@@ -19,7 +19,9 @@ class Ionclaw < Formula
     # build c++ binary
     system "cmake", "-S", ".", "-B", "build/release",
            "-DCMAKE_BUILD_TYPE=Release",
-           "-DCMAKE_INSTALL_PREFIX=#{prefix}"
+           "-DCMAKE_INSTALL_PREFIX=#{prefix}",
+           "-DHOMEBREW_ALLOW_FETCHCONTENT=ON",
+           *std_cmake_args
 
     system "cmake", "--build", "build/release", "--config", "Release", "--parallel"
 
