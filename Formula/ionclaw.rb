@@ -4,11 +4,9 @@
 class Ionclaw < Formula
   desc "C++ AI agent orchestrator that runs anywhere as a native build"
   homepage "https://github.com/ionclaw-org/ionclaw"
-  url "https://github.com/ionclaw-org/ionclaw.git",
-      tag: "1.0.3"
+  url "https://github.com/ionclaw-org/ionclaw.git", tag: "1.0.3"
   license "MIT"
-  head "https://github.com/ionclaw-org/ionclaw.git",
-       branch: "main"
+  head "https://github.com/ionclaw-org/ionclaw.git", branch: "main"
 
   depends_on "cmake" => :build
   depends_on "node" => :build
@@ -18,11 +16,17 @@ class Ionclaw < Formula
     system "npm", "install", "--prefix", "apps/web"
     system "npm", "run", "build", "--prefix", "apps/web"
 
+    # allow cpm to fetch dependencies during build
+    ENV["HOMEBREW_ALLOW_FETCHCONTENT"] = "1"
+
     # build c++ binary
     system "cmake", "-S", ".", "-B", "build/release",
            "-DCMAKE_BUILD_TYPE=Release",
+           "-DFETCHCONTENT_FULLY_DISCONNECTED=OFF",
            *std_cmake_args
+
     system "cmake", "--build", "build/release", "--config", "Release", "--parallel"
+
     system "cmake", "--install", "build/release"
   end
 
