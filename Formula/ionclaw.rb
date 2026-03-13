@@ -16,14 +16,10 @@ class Ionclaw < Formula
     system "npm", "install", "--prefix", "apps/web"
     system "npm", "run", "build", "--prefix", "apps/web"
 
-    # allow cpm to fetch dependencies during build
-    ENV["HOMEBREW_ALLOW_FETCHCONTENT"] = "1"
-
     # build c++ binary
     system "cmake", "-S", ".", "-B", "build/release",
            "-DCMAKE_BUILD_TYPE=Release",
-           "-DFETCHCONTENT_FULLY_DISCONNECTED=OFF",
-           *std_cmake_args
+           "-DCMAKE_INSTALL_PREFIX=#{prefix}"
 
     system "cmake", "--build", "build/release", "--config", "Release", "--parallel"
 
