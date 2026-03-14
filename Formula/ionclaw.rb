@@ -23,7 +23,10 @@ class Ionclaw < Formula
            "-DHOMEBREW_ALLOW_FETCHCONTENT=ON",
            *std_cmake_args
 
-    system "cmake", "--build", "build/release", "--config", "Release", "--parallel"
+    jobs = [ENV.make_jobs / 2, 1].max
+    ENV["CMAKE_BUILD_PARALLEL_LEVEL"] = jobs.to_s
+
+    system "cmake", "--build", "build/release", "--config", "Release"
 
     system "cmake", "--install", "build/release"
   end
